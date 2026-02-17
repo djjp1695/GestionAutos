@@ -1,12 +1,15 @@
 import VoitureService from '../Services/VoitureService.js';
 export default class VoitureManager {
     constructor(lienApi) {
+        //Création du service d'interaction avec la bd pour les voitures
         this.voitureService = new VoitureService(lienApi);
-        this.templates = [];
+        //Bloque le rafraîchissement automatique lors de la soumission du formulaire 
+        //de mise à jour et création d'une voiture
         $('#updateVoitureForm').on('submit', function (e) {
             e.preventDefault();
         });
     }
+
     async getAllVoitures() {
         return await this.voitureService.getAll();
     }
@@ -51,10 +54,16 @@ export default class VoitureManager {
         }
     }
 
+    /*Ouvre la fenêtre MODAL pour mettre actif,inactif une voiture
+    Même fonction pour afficher les informations de la voiture, pour confirmation
+    lors d'une validation de suppression d'une voiture*/
     async ouvrirModalActifInactifSuppresion(element, suppression) {
         const modalWindow = $('#modal-window-voiture');
+        //Enleve le click, car le bouton click est ajouter 
+        // à chaque réouverture de la fenêtre modal
         modalWindow.find('#boutonConfirmer').off('click');
 
+        //Vider le contenu de la fenêtre modal
         modalWindow.find('.modal-body').empty();
         if (!suppression)
             modalWindow.find('.modal-title')
@@ -106,6 +115,7 @@ export default class VoitureManager {
 
     }
 
+    //Ouvre la fênetre pour modifier (modification = true) ou créer une voiture
     async ouvrirModalModificationAjout(element, modification) {
         $('#updateVoitureForm')[0].reset();
         const modalWindow = $('#modal-window-modification-voiture');
@@ -166,6 +176,7 @@ export default class VoitureManager {
 
     }
 
+    //Créer une "carte" pour chaque voiture trouvée
     async afficherVoitures() {
         $('#tiles-container').empty();
         $('#tiles-container').append(

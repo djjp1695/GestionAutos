@@ -1,15 +1,29 @@
+/*
+Code Jquery pour manipulation des informations dans l'application web
+
+Date de création : 8 février 2026
+Date de modification : 16 février 2026
+*/
+///Inclusion du gestionnaire des voitures
 import VoitureManager from './Managers/VoitureManager.js';
+//Service pour récupérer les ressources multilingues
 import RessourcesService from './Services/RessourcesService.js';
 
+//Code Erreur = 404
 const codeErreurNotFound = 404;
+//Lien par défaut pour l'API
 const lienAPI = '/api';
+//Enumération des pages possibles (à développées)
 const pages = { rendezVous: "rendezVous", voitures: "voitures", technicien: "technicien" };
+//Mettre le français par défaut
 const lang_defaut = 'fr';
+//Pages "Voitures" par défaut
 const pagePrincipale = pages.voitures;
 
 class App {
 
     constructor() {
+        //Initialise le voitureManager
         this.voitureManager = new VoitureManager(lienAPI);
     }
     async chargerPage(hash) {
@@ -32,6 +46,7 @@ class App {
         this.ajusterSelonLangue();
     }
 
+    //Utilisation des classes CSS qui afficher les textes selon la langue sélectionnée
     ajusterSelonLangue() {
         $('#titrePrincipal').text(window.ressourcesService.getRessource(sessionStorage.getItem('lang'), 'titrePrincipal'));
         $('#voitures').text(window.ressourcesService.getRessource(sessionStorage.getItem('lang'), 'titreVoitures'));
@@ -77,6 +92,7 @@ class App {
 
     }
 
+    //Mets le bouton de la langue actif, selon la langue sélectionnée
     activerBoutonLangue() {
         let langue = sessionStorage.getItem('lang');
         $('.btn-lang').removeClass('active');
@@ -93,7 +109,7 @@ class App {
         }
     }
 
-
+    //Change la langue de l'application, lors de l'appuie sur un bouton de langue
     changerLangue(langue) {
         sessionStorage.setItem('lang', langue);
         this.activerBoutonLangue();
@@ -110,17 +126,23 @@ class App {
 
 
 (async () => {
+    //Crée un object APP 
     const app = new App();
+    //Mets APP accessible dans toute l'application, variable globale
     window.app = app;
+    //Si la langue n'est pas définie dans la session, on la définie en français par défaut
     if (!sessionStorage.getItem('lang'))
         sessionStorage.setItem('lang', lang_defaut);
 
     try {
+        //Création du service de ressources et stockage des ressources multilingues dans
+        //un variable globale
         let ressourcesService = new RessourcesService(lienAPI);
         await ressourcesService.fetchRessources();
         window.ressourcesService = ressourcesService;
     }
     catch (err) {
+        //Affiche une erreur, si impossible de lire les ressources linguistiques
         console.error(err);
     }
 

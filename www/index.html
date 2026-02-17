@@ -5,39 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plateforme de rendez-vous</title>
-
+    <!--Inclusion de Jquery, Bootstrap et App.js pour la logique Javascript de l'application-->
     <script type="text/javascript" src="static/vendor/jquery-4.0.0.min.js"></script>
     <script type="text/javascript" src="static/vendor/bootstrap.bundle.min.js"></script>
     <script type="module" src="static/js/app.js"></script>
     <link rel="stylesheet" href="static/vendor/bootstrap.min.css">
     <script>
+        ///Passage du code d'erreur si 404 rencontré
         window.initialStatusCode = {{ initial_status_code | default (200) }};
     </script>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg bg-success" data-bs-theme="dark">
-    <div class="container-fluid" id="liens">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link pages" id="voitures" href="/#voitures"></a>
-            </li>
-        </ul>
-        <div class="d-flex ms-auto">
-            <button class="btn-lang btn-en btn btn-outline-light me-2" onclick="app.changerLangue('en')">EN</button>
-            <button class="btn-lang btn-fr btn btn-outline-light me-2" onclick="app.changerLangue('fr')">FR</button>
-            <button class="btn-lang btn-es btn btn-outline-light" onclick="app.changerLangue('es')">ES</button>
+    <nav class="navbar navbar-expand-lg bg-success" data-bs-theme="dark">
+        <div class="container-fluid" id="liens">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link pages" id="voitures" href="/#voitures"></a>
+                </li>
+            </ul>
+            <div class="d-flex ms-auto">
+                <button class="btn-lang btn-en btn btn-outline-light me-2" onclick="app.changerLangue('en')">EN</button>
+                <button class="btn-lang btn-fr btn btn-outline-light me-2" onclick="app.changerLangue('fr')">FR</button>
+                <button class="btn-lang btn-es btn btn-outline-light" onclick="app.changerLangue('es')">ES</button>
 
+            </div>
+        </div>
+    </nav>
+
+    <h1 id="titrePrincipal"></h1>
+    <h2 id="contenuPages"></h2>
+    <div id="content" class="container">
+        <div id="tiles-container" class="row">
         </div>
     </div>
-</nav>
-
-<h1 id="titrePrincipal"></h1>
-<h2 id="contenuPages"></h2>
-<div id="content" class="container">
-    <div id="tiles-container" class="row">
-    </div>
-</div>
 </body>
 
 <script id="card-template-voiture" type="text/x-template">
