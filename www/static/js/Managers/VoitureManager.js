@@ -11,7 +11,14 @@ export default class VoitureManager {
     }
 
     async getAllVoitures() {
-        return await this.voitureService.getAll();
+        try
+        {
+            const response = await this.voitureService.getAll();
+            return response;
+        } catch(error) {
+            console.error(error);
+            throw new Error(error);
+        }
     }
     async rendreVoitureActifInactif(id, actif) {
         try {
