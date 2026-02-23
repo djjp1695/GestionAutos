@@ -9,7 +9,13 @@ export default class RessourcesService {
     //Récupére les ressources multilingues depuis l'API rest
     async fetchRessources() {
         try {
-            const response = await fetch(`${this.lienAPI}/Ressources`)
+            const response = await fetch(`${this.lienAPI}/Ressources`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${await window.app.getToken()}`
+                    }
+                }
+            )
             if (!response.ok) {
                 console.error(response.status);
                 throw new Error(`Failed to fetch resources: ${response.status}`);

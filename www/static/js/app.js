@@ -4,11 +4,11 @@ Code Jquery pour manipulation des informations dans l'application web
 Date de création : 8 février 2026
 Date de modification : 16 février 2026
 */
+import AuthService from './Services/AuthService.js';
 ///Inclusion du gestionnaire des voitures
 import VoitureManager from './Managers/VoitureManager.js';
 //Service pour récupérer les ressources multilingues
 import RessourcesService from './Services/RessourcesService.js';
-
 //Code Erreur = 404
 const codeErreurNotFound = 404;
 //Lien par défaut pour l'API
@@ -19,16 +19,17 @@ const pages = { rendezVous: "rendezVous", voitures: "voitures", technicien: "tec
 const lang_defaut = 'fr';
 //Pages "Voitures" par défaut
 const pagePrincipale = pages.voitures;
+const user = 'app';
+const password = 'appWeb';
 
 class App {
 
     constructor() {
         //Initialise le voitureManager
         this.voitureManager = new VoitureManager(lienAPI);
+        this.authService = new AuthService(lienAPI, user, password);
     }
     async chargerPage(hash) {
-
-
         $('#tiles-container').empty();
         this.activerBoutonLangue();
         if (window.initialStatusCode == codeErreurNotFound) {
@@ -122,14 +123,65 @@ class App {
         $('#tiles-container').empty();
         $('#contenuPages').attr('class', 'retour-accueil');
     }
+
+    async generateToken() {
+        let token = await this.authService.getToken();
+        if (token != undefined)
+            sessionStorage.setItem('token', token);
+        else
+            alert("Impossible de se connecter");
+    }
+
+    decodeToken(token) {
+        var base64URL = token.split('.')[1];
+        if (!base64URL) return null;
+        var base64 = base64URL.replace(/-/g, '+').replace(/_/g, '/');
+        try {
+            return JSON.parse(atob(base64));
+        }
+        catch (e) {
+            return null;
+        }
+    }
+
+    async getToken() {
+        let token = sessionStorage.getItem('token');
+        if (token == null) {
+            await this.generateToken();
+        }
+        else {
+            var payload = this.decodeToken(token);
+            if (!payload || !payload.exp)
+                return null;
+            var expDate = new Date(payload.exp * 1000);
+
+            if (expDate < new Date()) {
+                await this.generateToken();
+                var newToken = sessionStorage.getItem('token');
+                if (newToken) {
+                    console.log(expDate);
+
+                    token = newToken;
+                    localStorage.setItem('token', token);
+                }
+                else
+                    return null;
+            }
+        }
+        return token;
+    }
 }
 
 
 (async () => {
     //Crée un object APP 
     const app = new App();
+    await app.generateToken();
     //Mets APP accessible dans toute l'application, variable globale
     window.app = app;
+
+
+
     //Si la langue n'est pas définie dans la session, on la définie en français par défaut
     if (!sessionStorage.getItem('lang'))
         sessionStorage.setItem('lang', lang_defaut);

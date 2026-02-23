@@ -9,7 +9,13 @@ export default class VoitureService {
     //Retourne une liste de toutes les voitures
     async getAll() {
         try {
-            const response = await fetch(`${this.lienAPI}/Voitures`)
+            const response = await fetch(`${this.lienAPI}/Voitures`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${await window.app.getToken()}`
+                    }
+                }
+            )
             if (!response.ok)
                 console.error(response.status);
             const data = await response.json();
@@ -25,7 +31,10 @@ export default class VoitureService {
         try {
             const response = await fetch(`${this.lienAPI}/Voitures/${id}/status?actif=${actif}`,
                 {
-                    method: 'PUT'
+                    method: 'PUT',
+                    headers: {
+                        "Authorization": `Bearer ${await window.app.getToken()}`
+                    }
                 })
             if (!response.ok)
                 console.error(response.status);
@@ -46,7 +55,8 @@ export default class VoitureService {
                 {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${await window.app.getToken()}`
                     },
                     body: JSON.stringify({
                         marque: marque,
@@ -75,7 +85,8 @@ export default class VoitureService {
                 {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${await window.app.getToken()}`
                     },
                     body: JSON.stringify({
                         marque: marque,
@@ -102,7 +113,10 @@ export default class VoitureService {
         try {
             const response = await fetch(`${this.lienAPI}/Voitures/${id}`,
                 {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${await window.app.getToken()}`
+                    }
                 });
             if (!response.ok)
                 console.error(response.status);

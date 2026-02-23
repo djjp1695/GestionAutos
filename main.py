@@ -12,6 +12,7 @@ from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
 from Models.DbContext import DbContext
+from Routes.LoginRouter import LoginRouter
 from Routes.RessourcesRouter import RessourcesRouter
 from Routes.VoitureRouter import VoitureRouter
 from Services.RessourcesService import RessourceService
@@ -33,6 +34,7 @@ app = FastAPI()
 #Inclusion du router pour les ressources et les voitures
 app.include_router(VoitureRouter(VoitureService(dbContext), API_LINK).router)
 app.include_router(RessourcesRouter(RessourceService(RESSOURCE_FILENAME), API_LINK).router)
+app.include_router(LoginRouter(API_LINK).router)
 
 #Ajout des fichiers "Static" au serveur web Uvicorn
 app.mount("/static", StaticFiles(directory="www/static"), name="static")
