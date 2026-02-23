@@ -19,6 +19,8 @@ const pages = { rendezVous: "rendezVous", voitures: "voitures", technicien: "tec
 const lang_defaut = 'fr';
 //Pages "Voitures" par défaut
 const pagePrincipale = pages.voitures;
+
+//Nom d'utilisateur et mot de passe par défaut
 const user = 'app';
 const password = 'appWeb';
 
