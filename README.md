@@ -8,6 +8,7 @@ Plateforme de gestion automobile en FastAPI avec front-end Javascript (Jquery)
 - SQLModel
 - aiosqlite (Pilote pour BD SQLite)
 - Jquery et Bootstrap, utilisé dans le front-end Web
+- PyJWT
 
 > Il est recommandé d’utiliser un environnement virtuel pour gérer les dépendances.
 
