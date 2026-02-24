@@ -15,7 +15,7 @@ Plateforme de gestion automobile en FastAPI avec front-end Javascript (Jquery)
 ---
 ## Vidéo du projet
 - Disponible sur Youtube
-  - 
+  - https://www.youtube.com/watch?v=Fa5ass7BpyM
 
 ## Installation
 
